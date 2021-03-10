@@ -19,3 +19,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password',validators=[DataRequired()]);
     remember = BooleanField('Remember me');
     submit = SubmitField('Login');
+
+class QuestionForm(FlaskForm):
+    question = StringField('Question',validators=[DataRequired()]);
+    answer = StringField("Answer", validators=[DataRequired()]);
+    submit = SubmitField('Create');
