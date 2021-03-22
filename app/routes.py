@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request;
 from app import app, db, bcrypt;
-from app.forms import LoginForm, RegistrationForm, QuestionForm;
+from app.forms import LoginForm, RegistrationForm;
 from app.models import User;
 from flask_login import login_user, current_user, logout_user, login_required;
 
@@ -47,9 +47,24 @@ def logout():
     logout_user();
     return redirect(url_for('home'));
 
-@app.route('/create')
+@app.route('/create', methods=['GET','POST'])
 @login_required
 def create():
-    form = QuestionForm();
-    return render_template('create.html',is_logged_in=current_user.is_authenticated, form=form);
-
+    fine = True;
+    if(request.method == "POST"):
+        data = request.form;
+        print(data);
+        keylist = [];
+        for d in data:
+            keylist.append(d);
+        for key in keylist:
+            if(data[key] == ''):
+                flash(key+" has not been filled.","warning");
+                fine = False;
+                break;
+        if(fine):
+            return redirect(url_for("home"));
+    number = int(len(request.form)/2);
+    if(number == 0):
+        number = 1;
+    return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number);

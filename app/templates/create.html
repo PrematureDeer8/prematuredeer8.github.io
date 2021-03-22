@@ -1,57 +1,79 @@
 {% extends "layout.html" %}
 {% block content %}
-<form method="POST">
-    {{form.hidden_tag()}}
+<form action="" method="POST">
     <div class="card mt-5" style="width: 75rem;">
         <div class="card-header">
           <legend>Create</legend>
         </div>
         <div class="card-body">
-            <div class='container'>
-        {% for x in range(0,5) %}
-          <div class="row">
-              <div class="col">
-                  <h6>{{ form.question.label(class="mb-3 fw-light") }}</h6>
-                    {% if form.question.errors %}
-                        {{ form.question(class="form-control is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.question.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.question(class="form-control form-control-lg") }}
-                    {% endif %}
+            <div class='container' id="container">
+            {% for x in range(1, number+1) %}
+                <div class="row" id="row">
+                <div class="col">
+                    <label class="form-label mt-3">Question</label>
+                    <input type="question" name="{{'question'~x}}" class="form-control" id="question" value="{{request.form['question'~x]}}">
                 </div>
-            <div class="col">
-                <h6>{{ form.answer.label(class="mb-3 fw-light") }}</h6>
-            {% if form.answer.errors %}
-                        {{ form.answer(class="form-control mb-3 is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.answer.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.answer(class="form-control mb-3 form-control-lg") }}
-                    {% endif %}
+                <div class="col">
+                    <label class="form-label mt-3">Answer</label>
+                    <input type="answer" name="{{'answer'~x}}" class="form-control" id="answer" value='{{request.form["answer"~x]}}'>
+                </div>
             </div>
-        </div>
             {% endfor %}
-            <div class="d-flex justify-content-center mt-2">
-                <button class="btn btn-outline-info" id="add_button">
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+                <a class="btn btn-outline-info" id="add_button" onclick="more_forms()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                         <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                     </svg>
-                </button>
+                </a>
             </div>
-                    
-            
-            <div class="d-flex flex-row-reverse">{{form.submit(class="btn btn-outline-primary mt-4")}}</div>
+            <div class="d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </div>
-        </div>
-      </div>
+    </div>
 </form>
-<script src="js/javascript.js"></script>
+<script>
+    var counter = 0;
+    var container = document.getElementById("container");
+    var divs = container.getElementsByTagName("div");
+    for(var i = 0; i < divs.length; i++){
+        if(divs[i].getAttribute("class") == "row"){
+            counter = counter + 1;
+        }
+    }
+    function more_forms(){    
+        counter = counter + 1;
+        var strcounter = counter.toString();
+        container = document.getElementById("container");
+        var row = document.createElement("div");
+        row.className = "row";
+        var col = document.createElement("div");
+        col.className="col";
+        var question = document.createElement("label");
+        question.className = "form-label mt-3";
+        question.textContent  = "Question";
+        col.appendChild(question);
+        var question_form  = document.createElement("input");
+        question_form.className = "form-control";
+        var name = "question".concat(strcounter);
+        question_form.name = name;
+        col.appendChild(question_form);
+        var col1 = document.createElement("div");
+        col1.className = "col";
+        var answer = document.createElement("label");
+        answer.className = "form-label mt-3";
+        answer.textContent  = "Answer";
+        var answer_form  = document.createElement("input");
+        answer_form.className = "form-control";
+        name = "answer".concat(strcounter);
+        answer_form.name = name;
+        col1.appendChild(answer);
+        col1.appendChild(answer_form);
+        row.appendChild(col);
+        row.appendChild(col1);
+        container.appendChild(row);
+    }
+</script>
 {% endblock content %}
