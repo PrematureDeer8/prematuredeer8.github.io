@@ -1,3 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
+{% for i in range(length-1,-1,-1) %}
+<div class="row p-3">
+    <div class="col-4">
+        <div class="card text-center">
+            <div class="card-header">
+            <a href="#">{{users[i]}}</a>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">{{content[i]['title']}}</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+            <div class="card-footer text-muted">
+            {% if(date[i].strftime('%d') == now.strftime('%d')) %}
+            {{date[i].strftime("%I:%M %p")}}
+            {% else %}
+            {{date[i].strftime("%c")}}
+            {% endif %} 
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock content %}

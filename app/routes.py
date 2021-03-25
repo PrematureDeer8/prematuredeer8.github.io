@@ -1,14 +1,27 @@
 from flask import Flask, render_template, url_for, flash, redirect, request;
 from app import app, db, bcrypt;
 from app.forms import LoginForm, RegistrationForm;
-from app.models import User;
+from app.models import User, TriviaGame;
 from flask_login import login_user, current_user, logout_user, login_required;
+import json;
+import datetime;
 
-@app.route("/")
 @app.route('/home')
+@app.route("/")
 def home():
+    now = datetime.date.today();
     logged_in = current_user.is_authenticated;
-    return render_template("home.html", title="home", is_logged_in=logged_in);
+    raw = TriviaGame.query.all();
+    content = [];
+    date = [];
+    users = [];
+    for i in range(len(raw)-1, -1, -1):
+        users.append(raw[i].author.username);
+        content.append(json.loads(raw[i].content));
+        date.append(raw[i].date);
+    # print(content);
+    # print(date);
+    return render_template("home.html", title="home",users=users, is_logged_in=logged_in, content=content, length=len(content), date=date, now=now);
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -52,17 +65,27 @@ def logout():
 def create():
     fine = True;
     if(request.method == "POST"):
-        data = request.form;
-        print(data);
+        trivia = request.form;
+        # print(data);
         keylist = [];
-        for d in data:
+        questions = [];
+        answers = [];
+        for d in trivia:
             keylist.append(d);
         for key in keylist:
-            if(data[key] == ''):
+            if(key.__contains__('question')):
+                # print(key);
+                questions.append(key);
+            elif(key.__contains__('answer')):
+                answers.append(key);
+            if(trivia[key] == ''):
                 flash(key+" has not been filled.","warning");
                 fine = False;
                 break;
         if(fine):
+            triviagame = TriviaGame(content=json.dumps(trivia), author=current_user);
+            db.session.add(triviagame);
+            db.session.commit();
             return redirect(url_for("home"));
     number = int(len(request.form)/2);
     if(number == 0):
