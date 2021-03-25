@@ -16,3 +16,4 @@ pycparser
 six
 SQLAlchemy
 Werkzeug
+email_validator
