@@ -91,3 +91,8 @@ def create():
     if(number == 0):
         number = 1;
     return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number);
+
+@app.route('/upload')
+@login_required
+def upload():    
+    return render_template('upload.html',is_logged_in=current_user.is_authenticated);
