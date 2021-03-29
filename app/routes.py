@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request;
 from app import app, db, bcrypt;
-from app.forms import LoginForm, RegistrationForm;
+from app.forms import LoginForm, RegistrationForm, FileUpload;
 from app.models import User, TriviaGame;
 from flask_login import login_user, current_user, logout_user, login_required;
 import json;
@@ -63,13 +63,17 @@ def logout():
 @app.route('/create', methods=['GET','POST'])
 @login_required
 def create():
+    form = FileUpload();
     fine = True;
     if(request.method == "POST"):
         trivia = request.form;
-        # print(data);
+        file = request.form['file'];
         keylist = [];
         questions = [];
         answers = [];
+        if(file):
+            # some lines of code
+            return redirect(url_for('home'));
         for d in trivia:
             keylist.append(d);
         for key in keylist:
@@ -90,7 +94,7 @@ def create():
     number = int(len(request.form)/2);
     if(number == 0):
         number = 1;
-    return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number);
+    return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number, form=form);
 
 @app.route('/upload')
 @login_required
