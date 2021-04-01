@@ -96,3 +96,8 @@ def create():
 @login_required
 def upload():    
     return render_template('upload.html',is_logged_in=current_user.is_authenticated);
+
+@app.route('/upload.php')
+@login_required
+def uploadphp():    
+    return render_template('upload.php',is_logged_in=current_user.is_authenticated);
