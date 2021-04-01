@@ -23,6 +23,7 @@ class TriviaGame(db.Model):
     content = db.Column(db.String(200), nullable=False);
     date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now());
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False);
+    file = db.Column(db.String(100));
 
     def __repr__(self):
         return f"TriviaGame('{self.content}', '{self.date}')";
