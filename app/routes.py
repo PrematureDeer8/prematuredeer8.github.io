@@ -66,8 +66,8 @@ def create():
     form = FileUpload();
     fine = True;
     if(request.method == "POST"):
-        trivia = request.form;
         file = request.form['file'];
+        trivia = request.form;
         keylist = [];
         questions = [];
         answers = [];
@@ -82,7 +82,7 @@ def create():
                 questions.append(key);
             elif(key.__contains__('answer')):
                 answers.append(key);
-            if(trivia[key] == ''):
+            if(trivia[key] == '' and key != 'file'):
                 flash(key+" has not been filled.","warning");
                 fine = False;
                 break;
@@ -91,8 +91,9 @@ def create():
             db.session.add(triviagame);
             db.session.commit();
             return redirect(url_for("home"));
-    number = int(len(request.form)/2);
-    if(number == 0):
+    number = int(len(request.form)/2)-1;
+    print(number);
+    if(number == -1):
         number = 1;
     return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number, form=form);
 

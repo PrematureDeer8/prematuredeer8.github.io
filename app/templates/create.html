@@ -14,13 +14,14 @@
         <div class="card-body">
             <div class='container' id="container">
             {% for x in range(1, number+1) %}
-                <div class="row" id="{{'row'~x}}">
-                    <div class="d-flex flex-row-reverse">
-                    <!-- <a href="" onclick="delete_button('row'.concat(counter))" id="trashbin" onmouseover="trashbin.style.color = 'orange'" onmouseout="trashbin.style.color = 'black'" style="color: black;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <div class="row" id="{{'row'~x}}" onmouseover="tb[{{x|tojson}} - 1].style.display = 'block'" onmouseout="tb[{{x|tojson}} - 1].style.display = 'none'">
+                    <div class="d-flex flex-row-reverse mt-3" id="{{'div'~x}}">
+                    <a href="javascript:void(0);" onclick="delete_button(this)" class="trashbin" onmouseover="tb[{{x|tojson}} - 1].style.color = 'orange'" onmouseout="tb[{{x|tojson}} - 1].style.color = 'black'" style="color: black;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                       </svg>
-                    </a> -->
+                    </a>
                 </div>
                 <div class="col">
                     <label class="form-label mt-2">Question</label>
@@ -55,7 +56,7 @@
       </nav>
 </form>
 <script>
-    var trashbin = document.getElementById("trashbin");
+    var tb = document.getElementsByClassName("trashbin");
     var counter = 0;
     var container = document.getElementById("container");
     var divs = container.getElementsByTagName("div");
@@ -71,6 +72,25 @@
         var row = document.createElement("div");
         row.className = "row";
         row.id = "row".concat(counter);
+        // trashbin
+        var div = document.createElement("div");
+        div.className = "d-flex flex-row-reverse mt-3";
+        div.id = "div".concat(counter);
+        var trash_button = document.createElement("a");
+        trash_button.setAttribute("href","javascript:void(0);");
+        trash_button.style.color = "black";
+        trash_button.onmouseover = function(){trash_button.style.color = 'orange'};
+        trash_button.onmouseout = function(){trash_button.style.color = "black"};
+        var svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg>`;
+        trash_button.innerHTML = svg;
+        div.appendChild(trash_button);
+        trash_button.onclick = function(){trash_button.parentElement.parentElement.remove()}
+        row.appendChild(div);
+        row.onmouseover = function(){trash_button.style.display = "block"};
+        row.onmouseout = function(){trash_button.style.display = "none"};
         var col = document.createElement("div");
         col.className="col";
         var question = document.createElement("label");
@@ -97,10 +117,34 @@
         row.appendChild(col1);
         container.appendChild(row);
     }
-    async function delete_button(element_id){
-        var element = document.getElementById(element_id);
-        element.remove();
-    }
+    function delete_button(child){
+        var parent = child.parentElement.parentElement;
+        var container = child.parentElement.parentElement.parentElement;
+        var div = container.getElementsByTagName("div")
+        parent.remove();
+        var div_row = [];
+        var count = 0; 
+        for(var i = 0; i < divs.length; i++){
+            if(div[i].getAttribute("class") == "row"){
+                div_row[i] = div[i];
+                // console.log(div_row[i])
+
+            }
+        }
+        // console.log(div_row.length);
+        for(var i =0; i < div_row.length; i++){
+            if(div_row[i] != null){
+                div_row[i].setAttribute("onmouseover",`tb[${count}].style.display = 'block'`);
+                div_row[i].setAttribute("onmouseout", `tb[${count}].style.display = 'none'`);
+                div_row[i].querySelector("a").setAttribute("onmouseover",`tb[${count}].style.color = 'orange'`);
+                div_row[i].querySelector("a").setAttribute("onmouseout",`tb[${count}].style.color = 'black'`);
+                count++;
+            }
+            
+        }
+        
+    
+}
 </script>
 
 {% endblock content %}
