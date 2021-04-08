@@ -2,16 +2,11 @@
 {% block content %}
 
 
-<h1>Upload page</h1>
-<p>Please upload a file.</p>
-
-<form action="upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload", accept=".txt">
-    <input type="submit" value="Upload .txt" name="submit">
-
-
-  </form>
+<form method="POST">
+  <label class="form-label mt-2">Question</label>
+  <input name="fileToUpload" id="fileToUpload">
+  <button>Submit</button>
+</form>
 
 
 {% endblock content %}

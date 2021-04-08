@@ -67,6 +67,7 @@ def create():
     fine = True;
     if(request.method == "POST"):
         file = request.form['file'];
+        print(file)
         trivia = request.form;
         keylist = [];
         questions = [];
@@ -97,9 +98,11 @@ def create():
         number = 1;
     return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number, form=form);
 
-@app.route('/upload')
+@app.route('/upload', methods=['GET','POST'])
 @login_required
-def upload():    
+def upload():
+    if(request.method == "POST"):
+        print(request.form['fileToUpload']);    
     return render_template('upload.html',is_logged_in=current_user.is_authenticated);
 
 @app.route('/upload.php')
