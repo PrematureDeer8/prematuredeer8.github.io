@@ -92,7 +92,7 @@ def create():
             db.session.commit();
             return redirect(url_for("home"));
     number = int(len(request.form)/2)-1;
-    print(number);
+    # print(number);
     if(number == -1):
         number = 1;
     return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number, form=form);
