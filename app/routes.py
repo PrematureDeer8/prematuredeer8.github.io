@@ -5,6 +5,7 @@ from app.models import User, TriviaGame;
 from flask_login import login_user, current_user, logout_user, login_required;
 import json;
 import datetime;
+import os;
 
 @app.route('/home')
 @app.route("/")
@@ -98,14 +99,21 @@ def create():
         number = 1;
     return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number, form=form);
 
-@app.route('/upload', methods=['GET','POST'])
+@app.route('/upload')
 @login_required
-def upload():
-    if(request.method == "POST"):
-        print(request.form['fileToUpload']);    
+def upload():    
     return render_template('upload.html',is_logged_in=current_user.is_authenticated);
 
-@app.route('/upload.php')
-@login_required
-def uploadphp():    
-    return render_template('upload.php',is_logged_in=current_user.is_authenticated);
+
+UPLOAD_FOLDER =  'app\\uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    fileup = None
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        fileup = uploaded_file.filename
+        uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename))
+    return redirect(url_for('upload', fileup = fileup))

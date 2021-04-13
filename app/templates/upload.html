@@ -2,17 +2,88 @@
 {% block content %}
 
 <body>
+  <div class="card" style="width: 75rem;">
+  <h1><marquee>File Upload</marquee></h1>
+  <form method="POST" action="" enctype="multipart/form-data">
+    <p><input type="file" name="file" accept = ".txt"></p>
+    <p><input type="submit" value="Submit"></p>
+  </form>
+
+  <p id="name"></p>
+
+  <script>
+
+  
+    if (window.location.href.length > 35) {
+    document.getElementById("name").innerHTML = 
+    "The <b>uploaded</b> file is: " + window.location.href.substring(36);
+    }
+    </script>
+</div>
 
 
-  <form method="POST">
-  <label class="form-label mt-2">Question</label>
-  <input name="fileToUpload" id="fileToUpload">
-  <button>Submit</button>
-</form>
-  </body>
 
 
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
 
-
-
+</body>
 {% endblock content %}
