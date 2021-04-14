@@ -18,3 +18,4 @@ SQLAlchemy
 Werkzeug
 email_validator
 flask_wtf
+gunicorn
