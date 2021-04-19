@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
 
 class TriviaGame(db.Model):
     id = db.Column(db.Integer, primary_key=True);
-    content = db.Column(db.String(200), nullable=False);
+    content = db.Column(db.String(200));
     date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now());
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False);
     file = db.Column(db.String(100));
