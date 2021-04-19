@@ -66,15 +66,14 @@ def create():
     form = FileUpload();
     fine = True;
     if(request.method == "POST"):
-        file = request.form['file'];
-        print(file)
+        # file = request.form['file'];
         trivia = request.form;
         keylist = [];
         questions = [];
         answers = [];
-        if(file):
-            # some lines of code
-            return redirect(url_for('home'));
+        # if(file):
+        #     # some lines of code
+        #     return redirect(url_for('home'));
         for d in trivia:
             keylist.append(d);
         for key in keylist:
@@ -92,7 +91,7 @@ def create():
             db.session.add(triviagame);
             db.session.commit();
             return redirect(url_for("home"));
-    number = int(len(request.form)/2)-1;
+    number = int(len(request.form)/2);
     # print(number);
     if(number == -1):
         number = 1;
@@ -104,6 +103,10 @@ def upload():
     if(request.method == "POST"):
         print(request.form['fileToUpload']);    
     return render_template('upload.html',is_logged_in=current_user.is_authenticated);
+
+@app.route('/trivia-game/<int:id>')
+def trivia_homepage(id):
+    return render_template("trivia_game.html");
 
 @app.route('/upload.php')
 @login_required
