@@ -1,4 +1,54 @@
 {% extends "layout.html" %}
-
 {% block content %}
+<legend class="mb-3">Create a new Trivia Game</legend>
+    <div class="card">
+        <div class="card-header">
+        {% if (current_user.username == triv.author.username) and (is_logged_in) %}  
+          <div class="row">
+              <div class="col-3">
+                <label class="form-label"><h6>Title</h6></label>
+                <input class="form-control" type="text" name="title" placeholder="Title" value="{{triviagame['title']}}">
+            </div>
+        </div>
+        {% else %}
+            <div class="row">
+                <div class="col-3">
+                <label class="form-label"><h6>Title</h6></label>
+                <input class="form-control" readonly type="text" name="title" placeholder="Title" value="{{triviagame['title']}}">
+            </div>
+        </div>
+        {% endif %}
+        </div>
+        <div class="card-body">
+            <div class='container' id="container">
+            {% if (current_user.username == triv.author.username) and (is_logged_in) %}
+            {% for x in range(0,length) %}
+                <div class="row" id="{{'row'~x}}" >
+                <div class="col">
+                    <label class="form-label mt-2">Question</label>
+                    <input type="question" class="form-control" id="question" value="{{questions[x]}}">
+                </div>
+                <div class="col">
+                    <label class="form-label mt-2">Answer</label>
+                    <input type="answer" class="form-control" id="answer" value="{{answers[x]}}">
+                </div>
+                </div>
+            {% endfor %}
+            {% else %}
+            {% for x in range(0,length) %}
+                <div class="row" id="{{'row'~x}}" >
+                <div class="col">
+                    <label class="form-label mt-2">Question</label>
+                    <input type="question" class="form-control" id="question" value="{{questions[x]}}" readonly>
+                </div>
+                <div class="col">
+                    <label class="form-label mt-2">Answer</label>
+                    <input type="answer" class="form-control" id="answer" value="{{answers[x]}}" readonly>
+                </div>
+                </div>
+            {% endfor %}
+            {% endif %} 
+            </div>
+        </div>
+    </div>
 {% endblock content %}

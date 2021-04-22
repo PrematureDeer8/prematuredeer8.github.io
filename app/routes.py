@@ -106,7 +106,17 @@ def upload():
 
 @app.route('/trivia-game/<int:id>')
 def trivia_homepage(id):
-    return render_template("trivia_game.html");
+    triviagame = TriviaGame.query.get(id);
+    triv = json.loads(triviagame.content);
+    answers = [];
+    questions = [];
+    # print(triviagame.author.username);
+    for key in triv:
+        if(key.__contains__("answer")):
+            answers.append(triv[key]);
+        elif(key.__contains__("question")):
+            questions.append(triv[key]);
+    return render_template("trivia_game.html",is_logged_in=current_user.is_authenticated,questions=questions,answers=answers,triviagame=triv,length=len(answers), triv=triviagame);
 
 @app.route('/upload.php')
 @login_required
