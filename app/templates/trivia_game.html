@@ -51,4 +51,8 @@
             </div>
         </div>
     </div>
+    <!-- <input style="display:none;" name="current_user" value="{{current_user}}"> -->
+    <div class="container d-flex flex-row-reverse">
+        <a href="{{url_for('game',url=gamesession,host=current_user.id)}}" class="btn mt-3 btn-secondary">Create Game Session</a>
+    </div>
 {% endblock content %}

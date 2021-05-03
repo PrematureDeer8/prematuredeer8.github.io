@@ -5,6 +5,8 @@ from app.models import User, TriviaGame;
 from flask_login import login_user, current_user, logout_user, login_required;
 import json;
 import datetime;
+import uuid;
+
 
 @app.route('/home')
 @app.route("/")
@@ -65,6 +67,7 @@ def logout():
 def create():
     form = FileUpload();
     fine = True;
+    print("hello")
     if(request.method == "POST"):
         # file = request.form['file'];
         trivia = request.form;
@@ -92,9 +95,9 @@ def create():
             db.session.commit();
             return redirect(url_for("home"));
     number = int(len(request.form)/2);
-    # print(number);
     if(number == -1):
         number = 1;
+    print(number);
     return render_template('create.html',is_logged_in=current_user.is_authenticated, number=number, form=form);
 
 @app.route('/upload', methods=['GET','POST'])
@@ -110,13 +113,24 @@ def trivia_homepage(id):
     triv = json.loads(triviagame.content);
     answers = [];
     questions = [];
+    gamesession = str(uuid.uuid4().hex)[0:6]+str(id);
     # print(triviagame.author.username);
     for key in triv:
         if(key.__contains__("answer")):
             answers.append(triv[key]);
         elif(key.__contains__("question")):
             questions.append(triv[key]);
-    return render_template("trivia_game.html",is_logged_in=current_user.is_authenticated,questions=questions,answers=answers,triviagame=triv,length=len(answers), triv=triviagame);
+    return render_template("trivia_game.html",is_logged_in=current_user.is_authenticated,questions=questions,answers=answers,triviagame=triv,length=len(answers), triv=triviagame, gamesession=gamesession);
+
+@app.route("/gamesession/<url>")
+def game(url):
+    try:
+        host = User.query.get(request.args['host']);
+    except:
+        host = None;
+    triv = TriviaGame.query.get(int(url[-1]));
+    triviagame = json.loads(triv.content);
+    return render_template("index.html",triviagame=triviagame,url=url, host=host);
 
 @app.route('/upload.php')
 @login_required
